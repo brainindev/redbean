@@ -177,7 +177,8 @@ class Debug extends RDefault implements Logger
 			if (PHP_SAPI === 'cli' && !self::$noCLI) {
 				$newSql = "{$begin}\e[32m{$slot}\e[39m{$end}";
 			} else {
-				$newSql = "{$begin}<b style=\"color:green\">$slot</b>{$end}";
+				//$newSql = "{$begin}<b style=\"color:green\">$slot</b>{$end}";
+				$newSql = "{$begin}$slot{$end}";
 			}
 			$i ++;
 		}
