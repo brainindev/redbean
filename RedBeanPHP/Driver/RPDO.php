@@ -165,7 +165,8 @@ class RPDO implements Driver
 	{
 		$this->connect();
 		if ( $this->loggingEnabled && $this->logger ) {
-			$this->logger->log( $sql, $bindings );
+			$sqlLog = trim(preg_replace('/\s\s+/', ' ', $sql));
+			$this->logger->log( $sqlLog, $bindings );
 		}
 		try {
 			if ( strpos( 'pgsql', $this->dsn ) === 0 ) {
@@ -178,7 +179,9 @@ class RPDO implements Driver
 				$statement = $this->pdo->prepare( $sql );
 			}
 			$this->bindParams( $statement, $bindings );
+			$startStatementExecutionMicroTime = microtime();
 			$statement->execute();
+			$endStatementExecutionMicroTime = microtime();
 			$this->queryCounter ++;
 			$this->affectedRows = $statement->rowCount();
 			if ( $statement->columnCount() ) {
@@ -193,7 +196,8 @@ class RPDO implements Driver
 					$this->resultArray = $statement->fetchAll( $fetchStyle );
 				}
 				if ( $this->loggingEnabled && $this->logger ) {
-					$this->logger->log( 'resultset: ' . count( $this->resultArray ) . ' rows' );
+					$this->logger->log( count( $this->resultArray ) );
+					$this->logger->log( $endStatementExecutionMicroTime - $startStatementExecutionMicroTime );
 				}
 			} else {
 				$this->resultArray = array();
