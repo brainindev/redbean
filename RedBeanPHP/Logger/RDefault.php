@@ -77,7 +77,7 @@ class RDefault implements Logger
 	 */
 	public function getLogs()
 	{
-		return $this->logs;
+		return array_chunk($this->logs, 3);
 	}
 
 	/**
