@@ -201,6 +201,10 @@ class RPDO implements Driver
 				}
 			} else {
 				$this->resultArray = array();
+				if ( $this->loggingEnabled && $this->logger ) {
+                    			$this->logger->log( 0 );
+                    			$this->logger->log( $endStatementExecutionMicroTime - $startStatementExecutionMicroTime );
+                		}
 			}
 		} catch ( \PDOException $e ) {
 			//Unfortunately the code field is supposed to be int by default (php)
